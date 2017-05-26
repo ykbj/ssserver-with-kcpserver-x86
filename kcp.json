@@ -2,5 +2,6 @@
 	"listen": "0.0.0.0:4000",
 	"target": "127.0.0.1:8388",
 	"key": "testkcp",
-	"mode": "fast2"
+	"mode": "fast2",
+	"snmplog": "/home/kcplog/SNMP-20160102.log"
 }

@@ -4,7 +4,7 @@ from subprocess import call
 import shlex
 import os.path
 
-path = "/home/"
+path = "/home/sskcpserver"
 kcp_config_file = path + "kcp.json"
 ss_config_file = path + "shadowsocks.json"
 
