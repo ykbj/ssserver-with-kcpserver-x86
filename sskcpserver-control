@@ -1,0 +1,43 @@
+#!/bin/bash
+filename="$0"
+
+Usage(){
+    echo "Usage:    ./$filename {start|stop}"
+}
+
+START(){
+    sudo mkdir -p /dorry_data/sskcp_conf
+    sudo mkdir -p /dorry_data/kcplog
+    sudo cp kcp.json /dorry_data/sskcp_conf/
+    sudo cp shadowsocks.json /dorry_data/sskcp_conf/
+    docker run -itd --cap-add=NET_ADMIN --network=host --restart=always --privileged -v /dorry_data/sskcp_conf/:/home/sskcpserver -v /dorry_data/kcplog:/home/kcplog --name=ss-kcp-server dorrychocolate/ssserver-with-kcpserver-x86:test
+}
+
+STOP(){
+    sudo docker rm -f ss-kcp-server
+    sudo rm -rf /dorry_date/sskcp_conf
+    sudo rm -rf /dorry_data/kcplog
+    sudo rm -rf /dorry_data/
+}
+
+Status(){
+    docker ps -a|grep ss-kcp-server
+}
+
+if [ "$#" -ne 1 ]; then
+    Usage
+else
+    case "$1" in
+        start)
+            START
+            ;;
+
+        stop)
+            STOP
+            ;;
+       
+        *)
+            Usage
+            ;;
+    esac
+fi
