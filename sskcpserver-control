@@ -2,7 +2,11 @@
 filename="$0"
 
 Usage(){
-    echo "Usage:    ./$filename {start|stop}"
+    echo "Usage: $filename <command>"
+    echo "command options:"
+    echo "  start   start sskcp service"
+    echo "  stop    stop sskcp service"
+    echo "  status  display the status of  sskcp service"
 }
 
 START(){
@@ -20,8 +24,10 @@ STOP(){
     sudo rm -rf /dorry_data/
 }
 
-Status(){
+STATUS(){
     docker ps -a|grep ss-kcp-server
+    tree -L 2 /dorry_data/sskcp_conf
+    tree -L 2 /dorry_data/kcplog
 }
 
 if [ "$#" -ne 1 ]; then
@@ -35,7 +41,9 @@ else
         stop)
             STOP
             ;;
-       
+        status)
+            STATUS
+            ;;       
         *)
             Usage
             ;;
