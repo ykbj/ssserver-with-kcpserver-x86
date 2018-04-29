@@ -3,9 +3,8 @@ FROM alpine:3.4
 ENV KCP_VER 20180316
 ENV KCP_URL https://github.com/xtaci/kcptun/releases/download/v$KCP_VER/kcptun-linux-amd64-$KCP_VER.tar.gz
 
-ENV SS_VER 3.0.3
+ENV SS_VER 3.1.3
 ENV SS_URL https://github.com/shadowsocks/shadowsocks-libev/releases/download/v$SS_VER/shadowsocks-libev-$SS_VER.tar.gz 
-
 
 RUN apk update && \
     apk upgrade && \
@@ -19,14 +18,12 @@ RUN set -ex && \
                                 build-base \
                                 curl \
                                 libev-dev \
-                                libtool \
                                 linux-headers \
-                                udns-dev \
                                 libsodium-dev \
                                 mbedtls-dev \
                                 pcre-dev \
                                 tar \
-                                udns-dev && \
+                                c-ares-dev && \
     cd /tmp && \
     curl -sSL $SS_URL | tar xz --strip 1 && \
     ./configure --prefix=/usr --disable-documentation && \
@@ -41,7 +38,7 @@ RUN set -ex && \
     )" && \
     apk add --no-cache --virtual .run-deps $runDeps && \
     apk del .build-deps && \
-    rm -rf /tmp/*
+    rm -rf /tmp/* && \
 
 ADD init ./
 ENTRYPOINT ./init
